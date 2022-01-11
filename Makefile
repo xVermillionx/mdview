@@ -15,7 +15,7 @@ deb: bin/linux-x86_64/mdview
 	mkdir -p package/usr/bin/
 	mkdir -p package/usr/share/man/man1/
 	cp control package/DEBIAN/
-	cp bin/linux-x86_64/mdview package/usr/bin/
+	cp bin/linux-x86_64/mdview-$(VERSION)/mdview package/usr/bin/
 	cp mdview.1 package/usr/share/man/man1/
 	dpkg-deb --build package
 	mv package.deb mdview-$(VERSION)_x86_64.deb
