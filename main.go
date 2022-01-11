@@ -67,8 +67,17 @@ func main() {
 	_, err = fmt.Fprintf(f, template, actualStyle, title, html)
 	check(err)
 	f.Sync()
-	err = browser.OpenFile(outfilePath)
-	check(err)
+  
+  o, _ := os.Stdout.Stat()
+  if (o.Mode() & os.ModeCharDevice) == os.ModeCharDevice { //Terminal
+    //Display info to the terminal
+    err = browser.OpenFile(outfilePath)
+    check(err)
+  } else { //It is not the terminal
+    // Display info to a pipe
+    _, err = fmt.Printf(template, actualStyle, title, html)
+    check(err)
+  }
 }
 
 func tempFileName(prefix, suffix string) string {
