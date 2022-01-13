@@ -21,9 +21,11 @@ func main() {
 	var versionPtr = flag.Bool("version", false, "Prints mdview version.")
 	var helpPtr = flag.Bool("help", false, "Prints mdview help message.")
 	var barePtr = flag.Bool("bare", false, "Bare HTML with no style applied.")
+	var filepathPtr = flag.Bool("filepath", false, "Output filepath instead of html on pipe/redirect")
 	flag.BoolVar(versionPtr, "v", false, "Prints mdview version.")
 	flag.BoolVar(helpPtr, "h", false, "Prints mdview help message.")
 	flag.BoolVar(barePtr, "b", false, "Bare HTML with no style applied.")
+	flag.BoolVar(filepathPtr, "f", false, "Output filelocation in pipe/redirect")
 
 	flag.Parse()
 	inputFilename := flag.Arg(0)
@@ -67,7 +69,7 @@ func main() {
 	_, err = fmt.Fprintf(f, template, actualStyle, title, html)
 	check(err)
 	f.Sync()
-  
+
   o, _ := os.Stdout.Stat()
   if (o.Mode() & os.ModeCharDevice) == os.ModeCharDevice { //Terminal
     //Display info to the terminal
@@ -75,7 +77,12 @@ func main() {
     check(err)
   } else { //It is not the terminal
     // Display info to a pipe
-    _, err = fmt.Printf(template, actualStyle, title, html)
+
+    if *filepathPtr {
+      _, err = fmt.Printf(outfilePath)
+    } else {
+      _, err = fmt.Printf(template, actualStyle, title, html)
+    }
     check(err)
   }
 }
