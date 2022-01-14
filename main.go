@@ -22,10 +22,12 @@ func main() {
 	var helpPtr = flag.Bool("help", false, "Prints mdview help message.")
 	var barePtr = flag.Bool("bare", false, "Bare HTML with no style applied.")
 	var filepathPtr = flag.Bool("filepath", false, "Output filepath instead of html on pipe/redirect")
+	var xhtmlPtr = flag.Bool("xhtml", false, "Choose XHTML instead of HTML")
 	flag.BoolVar(versionPtr, "v", false, "Prints mdview version.")
 	flag.BoolVar(helpPtr, "h", false, "Prints mdview help message.")
 	flag.BoolVar(barePtr, "b", false, "Bare HTML with no style applied.")
 	flag.BoolVar(filepathPtr, "f", false, "Output filelocation in pipe/redirect")
+	flag.BoolVar(xhtmlPtr, "x", false, "Choose XHTML instead of HTML")
 
 	flag.Parse()
 	inputFilename := flag.Arg(0)
@@ -44,8 +46,13 @@ func main() {
 	dat, err := ioutil.ReadFile(inputFilename)
 	check(err)
 
+  var htmlorxhtml =  markdown.HTML(true)
+  if *xhtmlPtr {
+      htmlorxhtml = markdown.XHTMLOutput(true)
+    }
+
 	md := markdown.New(
-		markdown.XHTMLOutput(true),
+    htmlorxhtml,
 		markdown.Nofollow(true),
 		markdown.Tables(true),
 		markdown.Typographer(true))
