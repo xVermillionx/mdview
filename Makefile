@@ -23,7 +23,7 @@ deb: bin/linux-x86_64/mdview
 snap:
 	snapcraft snap
 
-bin/linux-x86_64/mdview: manpage
+bin/linux-x86_64/mdview:
 	env GOOS=linux GOARCH=amd64 go build -o ./bin/linux-x86_64/mdview-$(VERSION)/mdview
 	cp mdview.1 bin/linux-x86_64/mdview-$(VERSION)/
 	tar czvf mdview-$(VERSION)-linux-x86_64.tar.gz -C bin/linux-x86_64/ .
